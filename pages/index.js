@@ -1,31 +1,31 @@
-import AllCharGrid from '@themes/hero/components/AllCharGrid'
-import { latestPosts } from '@lib/notion'
+import RecentUpdateGrid from '@/themes/heo/components/RecentUpdateGrid'
+import AllCharGrid from '@/themes/heo/components/AllCharGrid'
+import { getAllPosts } from '@/lib/db/SiteDataApi'
 
-// getStaticProps 必须在组件外部
 export async function getStaticProps() {
   let allPosts = []
   try {
-    allPosts = await latestPosts()
+    allPosts = await getAllPosts()
   } catch (err) {
-    console.error('Notion数据读取失败', err)
+    console.error('读取Notion数据失败', err)
     allPosts = []
   }
   return {
-    props: { allPosts },
+    props: {
+      allPosts
+    },
     revalidate: 60
   }
 }
 
-// 组件定义
 export default function Home({ allPosts }) {
   return (
     <main className="min-h-screen bg-white">
+      {/* 顶部居中搜索框 */}
       <div className="py-10 flex justify-center">
-        <input 
-          placeholder="搜索" 
-          className="border-2 border-black w-[600px] sm:w-[90%] px-3 py-2 text-lg" 
-        />
+        <input placeholder="搜索" className="border-2 border-black w-[600px] sm:w-[90%] px-3 py-2 text-lg" />
       </div>
+      <RecentUpdateGrid posts={allPosts} />
       <AllCharGrid posts={allPosts} />
     </main>
   )
