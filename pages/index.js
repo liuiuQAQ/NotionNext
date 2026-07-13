@@ -1,5 +1,16 @@
 import RecentUpdateGrid from '@/themes/heo/components/RecentUpdateGrid'
 import AllCharGrid from '@/themes/heo/components/AllCharGrid'
+import { latestPosts } from '@/lib/notion'
+
+export async function getStaticProps() {
+  const allPosts = await latestPosts()
+  return {
+    props: {
+      allPosts
+    },
+    revalidate: 60
+  }
+}
 
 export default function Home({ allPosts }) {
   return (
