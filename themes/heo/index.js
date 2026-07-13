@@ -1,17 +1,20 @@
 // themes/heo/index.js
 
-import { useGlobal } from '@lib/global' // 修正导入路径
+import { useGlobal } from '@lib/global'
 import RecentUpdateGrid from './components/RecentUpdateGrid'
 import AllCharGrid from './components/AllCharGrid'
 
 export default function ThemeLayout({ children, posts, ...props }) {
-  // 读取主题配置
-  const CONFIG = siteConfig('heo')
+  const { themeConfig } = useGlobal()
+  
+  // 从配置中读取开关
+  const showSearch = themeConfig?.HERO_LAYOUT?.showSearch !== false
+  const showRecentUpdate = themeConfig?.HERO_LAYOUT?.showRecentUpdate !== false
+  const showAllChars = themeConfig?.HERO_LAYOUT?.showAllChars !== false
   
   return (
     <div className="min-h-screen bg-white">
-      {/* 顶部导航栏 */}
-      {CONFIG.HERO_LAYOUT?.showSearch !== false && (
+      {showSearch && (
         <div className="py-10 flex justify-center">
           <input 
             placeholder="搜索角色..." 
@@ -19,18 +22,8 @@ export default function ThemeLayout({ children, posts, ...props }) {
           />
         </div>
       )}
-      
-      {/* 最近更新区域 */}
-      {CONFIG.HERO_LAYOUT?.showRecentUpdate !== false && (
-        <RecentUpdateGrid posts={posts} />
-      )}
-      
-      {/* 全部角色网格 */}
-      {CONFIG.HERO_LAYOUT?.showAllChars !== false && (
-        <AllCharGrid posts={posts} />
-      )}
-      
-      {/* 其他内容 */}
+      {showRecentUpdate && <RecentUpdateGrid posts={posts} />}
+      {showAllChars && <AllCharGrid posts={posts} />}
       {children}
     </div>
   )
