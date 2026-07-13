@@ -1,6 +1,6 @@
 // themes/heo/index.js
 
-import { siteConfig } from '@lib/config/config'  // 修正导入路径
+import { useGlobal } from '@lib/global' // 修正导入路径
 import RecentUpdateGrid from './components/RecentUpdateGrid'
 import AllCharGrid from './components/AllCharGrid'
 
