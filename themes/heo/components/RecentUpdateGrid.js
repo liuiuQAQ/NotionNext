@@ -1,34 +1,33 @@
-import RecentUpdateGrid from '@/themes/heo/components/RecentUpdateGrid'
-import AllCharGrid from '@/themes/heo/components/AllCharGrid'
-import { latestPosts } from '@/lib/notion'
+// themes/hero/components/RecentUpdateGrid.js
 
-// 静态预渲染获取Notion数据，捕获读取异常
-export async function getStaticProps() {
-  let allPosts = []
-  try {
-    allPosts = await latestPosts()
-  } catch (err) {
-    console.error('Notion数据读取失败', err)
-    allPosts = []
-  }
-  return {
-    props: {
-      allPosts
-    },
-    revalidate: 60
-  }
-}
+export default function RecentUpdateGrid({ posts }) {
+  // 按更新时间排序，取前6个
+  const recentPosts = posts
+    .sort((a, b) => new Date(b.publishDate || b.createdTime) - new Date(a.publishDate || a.createdTime))
+    .slice(0, 6)
 
-export default function Home({ allPosts }) {
   return (
-    <main className="min-h-screen bg-white">
-      {/* 顶部搜索框 */}
-      <div className="py-10 flex justify-center">
-        <input placeholder="搜索" className="border-2 border-black w-[600px] sm:w-[90%] px-3 py-2 text-lg" />
+    <section className="px-4 py-8 max-w-6xl mx-auto">
+      <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+        <span className="text-orange-500">●</span> 最近更新
+      </h2>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {recentPosts.map(post => (
+          <div key={post.id} className="border rounded-lg p-4 hover:shadow-lg transition-shadow">
+            <div className="aspect-square bg-gray-100 rounded mb-3 flex items-center justify-center">
+              {post.pageCover ? (
+                <img src={post.pageCover} alt={post.title} className="w-full h-full object-cover rounded" />
+              ) : (
+                <span className="text-gray-400">📷</span>
+              )}
+            </div>
+            <h3 className="font-medium truncate">{post.title}</h3>
+            <p className="text-sm text-gray-500 mt-1">
+              {post.publishDate || post.createdTime?.split('T')[0] || '最近'}
+            </p>
+          </div>
+        ))}
       </div>
-      {/* 两大角色区块 */}
-      <RecentUpdateGrid posts={allPosts} />
-      <AllCharGrid posts={allPosts} />
-    </main>
+    </section>
   )
 }
