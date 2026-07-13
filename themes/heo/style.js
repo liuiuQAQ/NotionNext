@@ -1,69 +1,22 @@
-/* eslint-disable react/no-unknown-property */
-/**
- * 此处样式只对当前主题生效
- * 此处不支持tailwindCSS的 @apply 语法
- * @returns
- */
-const Style = () => {
-  return (
-    <style jsx global>{`
-      body {
-        background-color: #f7f9fe;
-      }
+// themes/hero/style.js
 
-      // 公告栏中的字体固定白色
-      #theme-heo #announcement-content .notion {
-        color: white;
-      }
-
-      ::-webkit-scrollbar-thumb {
-        background: rgba(60, 60, 67, 0.4);
-        border-radius: 8px;
-        cursor: pointer;
-      }
-
-      ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-      }
-
-      #more {
-        white-space: nowrap;
-      }
-
-      .today-card-cover {
-        -webkit-mask-image: linear-gradient(to top, transparent 5%, black 70%);
-        mask-image: linear-gradient(to top, transparent 5%, black 70%);
-      }
-
-      .recent-top-post-group::-webkit-scrollbar {
-        display: none;
-      }
-
-      .scroll-hidden::-webkit-scrollbar {
-        display: none;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      // 标签滚动动画
-      .tags-group-wrapper {
-        animation: rowup 60s linear infinite;
-      }
-
-      @keyframes rowup {
-        0% {
-          transform: translateX(0%);
-        }
-        100% {
-          transform: translateX(-50%);
-        }
-      }
-    `}</style>
-  )
+export const STYLE = {
+  // 全局样式（Tailwind 类名）
+  global: {
+    body: 'bg-white text-gray-900',
+    container: 'max-w-6xl mx-auto px-4'
+  },
+  
+  // 卡片样式
+  card: {
+    wrapper: 'bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all',
+    title: 'text-lg font-bold text-gray-900',
+    tags: 'text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full'
+  },
+  
+  // 按钮样式
+  button: {
+    primary: 'bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors',
+    secondary: 'bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors'
+  }
 }
-
-export { Style }
-
