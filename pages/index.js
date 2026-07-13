@@ -1,32 +1,37 @@
-import RecentUpdateGrid from '@/themes/heo/components/RecentUpdateGrid'
-import AllCharGrid from '@/themes/heo/components/AllCharGrid'
-import { getAllPosts } from '@/lib/db/SiteDataApi'
+// themes/heo/index.js
 
-export async function getStaticProps() {
-  let allPosts = []
-  try {
-    allPosts = await getAllPosts()
-  } catch (err) {
-    console.error('读取Notion数据失败', err)
-    allPosts = []
-  }
-  return {
-    props: {
-      allPosts
-    },
-    revalidate: 60
-  }
-}
+import { siteConfig } from '@lib/config/config'  // 修正导入路径
+import RecentUpdateGrid from './components/RecentUpdateGrid'
+import AllCharGrid from './components/AllCharGrid'
 
-export default function Home({ allPosts }) {
+export default function ThemeLayout({ children, posts, ...props }) {
+  // 读取主题配置
+  const CONFIG = siteConfig('heo')
+  
   return (
-    <main className="min-h-screen bg-white">
-      {/* 顶部居中搜索框 */}
-      <div className="py-10 flex justify-center">
-        <input placeholder="搜索" className="border-2 border-black w-[600px] sm:w-[90%] px-3 py-2 text-lg" />
-      </div>
-      <RecentUpdateGrid posts={allPosts} />
-      <AllCharGrid posts={allPosts} />
-    </main>
+    <div className="min-h-screen bg-white">
+      {/* 顶部导航栏 */}
+      {CONFIG.HERO_LAYOUT?.showSearch !== false && (
+        <div className="py-10 flex justify-center">
+          <input 
+            placeholder="搜索角色..." 
+            className="border-2 border-black w-[600px] sm:w-[90%] px-3 py-2 text-lg rounded-lg focus:outline-none focus:border-orange-500"
+          />
+        </div>
+      )}
+      
+      {/* 最近更新区域 */}
+      {CONFIG.HERO_LAYOUT?.showRecentUpdate !== false && (
+        <RecentUpdateGrid posts={posts} />
+      )}
+      
+      {/* 全部角色网格 */}
+      {CONFIG.HERO_LAYOUT?.showAllChars !== false && (
+        <AllCharGrid posts={posts} />
+      )}
+      
+      {/* 其他内容 */}
+      {children}
+    </div>
   )
 }
