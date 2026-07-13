@@ -1,18 +1,16 @@
 // themes/heo/index.js
-// 这是主题的布局入口，不是首页内容
 
-import { useGlobal } from '@lib/global'
-import { siteConfig } from '@lib/config'
+import { siteConfig } from '@lib/config/config'  // 修正导入路径
 import RecentUpdateGrid from './components/RecentUpdateGrid'
 import AllCharGrid from './components/AllCharGrid'
 
 export default function ThemeLayout({ children, posts, ...props }) {
-  const { themeConfig } = useGlobal()
-  const CONFIG = siteConfig('heo', themeConfig)
+  // 读取主题配置
+  const CONFIG = siteConfig('heo')
   
   return (
     <div className="min-h-screen bg-white">
-      {/* 顶部导航栏 - 从配置读取 */}
+      {/* 顶部导航栏 */}
       {CONFIG.HERO_LAYOUT?.showSearch !== false && (
         <div className="py-10 flex justify-center">
           <input 
